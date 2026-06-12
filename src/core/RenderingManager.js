@@ -3,7 +3,7 @@ export default class RenderingManager {
         this.ctx = ctx;
     }
 
-    draw() {
+    draw(game) {
         
     }
 }
