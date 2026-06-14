@@ -1,29 +1,38 @@
 export default class InputManager{
     constructor() {
-        this.keyList = new Set();
-        this.legalMovementKeys = new Set(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"]);
-        this.legalSystemKeys = new Set(['p', 'Esc', "Enter", 'd', 'm']);
+
+        this.playerMovementQueue = [];
+        this.legalPlayerMovements = new Set(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"]);
+
+        this.menuInputSet = new Set();
+        this.legalMenuInputs = new Set(["p", "Escape", "Enter", "d", "z"]);
 
         window.addEventListener("keydown", (e) => {
-            console.log(e.key);
-            if((this.legalMovementKeys.has(e.key) || this.legalSystemKeys.has(e.key)) && !this.keyList.has(e.key))
-                this.keyList.add(e.key);
+            if(this.legalPlayerMovements.has(e.key) && !this.playerMovementQueue.includes(e.key))
+                this.playerMovementQueue.push(e.key);
+                
 
-            console.log(this.keyList);
-        });
-        
+            if(this.legalMenuInputs.has(e.key) && !this.menuInputSet.has(e.key))
+                this.menuInputSet.add(e.key);
+
+        });    
     }
 
 
-    checkKeyList(key) {
-        // To be called in each frame from Snake class to check possible actions. Also from GameManager class for actions like pause, debug mode, mute etc
-        return this.keyList.has(key);
+    getPlayerMovementQueue() {
+        return this.playerMovementQueue;
     }
+
+    shiftMovementQueue() {
+        this.playerMovementQueue.shift();
+    }
+
+    checkmenuInputSet(key) {
+        return this.menuInputSet.has(key);
+    }
+
 
     removeAlreadyExecuted(key) {
-        // To be called after action is taken from Snake Class / GameManager class
-        this.keyList.delete(key);
+        this.menuInputSet.delete(key);
     }
-
-
 }

@@ -10,7 +10,7 @@ export default class GameManager {
     }
 
     update() {
-        // this.input.checkKeyList();
+        
     }
 
     
